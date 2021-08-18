@@ -6,7 +6,7 @@
  nf-CAGE analysis pipline 
  Developed and maintained by Dr Mazdak Salavati
  #### Homepage / Documentation
- https://git.ecdf.ed.ac.uk/ruminant_functional_genomics/nextflow.git
+ https://github.com/MazdaX/nf-cage.git
 ----------------------------------------------------------------------------------------
 */
 
