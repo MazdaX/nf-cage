@@ -1,0 +1,2 @@
+2021-08-18 16:49:40	1.7s	nauseous_descartes	ERR	d24cb4a5de8739024a670b4a24951dc9	e17a853d-b813-41bd-a474-fc32ee66538d	nextflow run --with-docker nf-cage/base .
+2021-08-18 16:50:10	2.5s	jovial_mandelbrot	OK	d24cb4a5de8739024a670b4a24951dc9	ca68ea74-8643-42ce-8399-89fca4b8d931	nextflow run --with-docker nf-cage/base .
