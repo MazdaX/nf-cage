@@ -46,6 +46,7 @@ process multiqc {
     cpus 1
     maxForks 1
     cache true
+    
 
     input:
       path OUT_fastqc    

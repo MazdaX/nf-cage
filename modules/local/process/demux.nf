@@ -23,7 +23,8 @@ process demux {
     cpus 6
     maxForks 100
     cache true
-    afterScript 'echo "Done!!" > reporter.txt'
+    //afterScript 'echo "Done!!" > reporter.txt'
+    
 
     input:
         path IN_fastq               //the name of path variable should differ from workflow variable declarations
@@ -31,7 +32,7 @@ process demux {
         params.allowed_mismatch
 
     output:
-        path 'CAGE*/*.fastq' , emit: OUT_demux
+        path '**/*.fastq' , emit: OUT_demux
                 
     //In order to use system \$vars as well as DSL $vars
     // The issue is the for loop behaviour which cannot be invoked (process)
@@ -69,7 +70,6 @@ process merger {
         cat \${d}/${sample}.fastq >> ${sample}.fastq
     done;
     pigz --force -p 6 ${sample}.fastq
-    rm -f $projectDir/demux/unmatched.fastq.gz
-        
+            
     """
 }
