@@ -13,7 +13,7 @@ docker pull mazdax/nf-cage:minimal
 */
 
 nextflow.enable.dsl = 2
-params.all_in_one = "AIO CAGEfightR import ready"
+
 
 ////////////////////////////////////////////////////
 /* --               PRINT HELP                 -- */
