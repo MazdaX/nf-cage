@@ -1,5 +1,13 @@
+<p>
+  <img align="left" width="200" ![NextFlow Logo] src="/images/NF_logo.png"> 
+  <img align="center" width="200" ![Docker Logo] src="/images/docker_logo.png"> 
+  <img align="right" width="200" ![BovReg Logo] src="/images/BV_logo.png"> <br>
+</p>
+
 # BovReg nf-cage pipeline 
 This is a CAGE analysis pipeline used in BovReg consoritum (https://www.bovreg.eu/) studies. This pipeline was wrapped using NextFlow DSL2 syntax from demultiplexing to base pair resolution and strand specific read counting <br> (i.e. compatible for import to CAGEfightR https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
+
+
 
 Pipeline has the following steps: 
 1. Demultiplexing raw CAGE sequence data using _FASTXtoolkit_ (allowed mismatch 1)
