@@ -22,7 +22,8 @@ RUN conda config --add channels conda-forge && \
 
 # Setting up the nf_DSL2
 COPY environment.yml /
-RUN conda env create -n nf_DSL2 -f /environment.yml && conda clean -a
+RUN conda env create -n nf_DSL2 mamba && conda clean -a
+RUN mamba install -n nf_DSL2 --file /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/nf_DSL2/bin:$PATH
 
 #adding modules to the docker image
