@@ -24,15 +24,17 @@ process mapKeeper {
     if [ -f /ref/ARS-UCD1.2.fa ];then
         echo "Reference exists ..."
     else
-        echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
-        wget http://ftp.ensembl.org/pub/release-103/fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
+        #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
+        #wget http://ftp.ensembl.org/pub/release-103/fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
+        wget https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
     fi;
 
     if [ -f /ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
         else
-            pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-            mv Bos_taurus.ARS-UCD1.2.dna.toplevel.fa /ref/ARS-UCD1.2.fa
+            #pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
+            pigz -d -p 6 ARS-UCD1.2_Btau5.0.1Y.fa.gz
+            mv ARS-UCD1.2_Btau5.0.1Y.fa /ref/ARS-UCD1.2.fa
             samtools faidx /ref/ARS-UCD1.2.fa
             echo "Indexing Bos_taurus.ARS-UCD1.2 for the bowtie2..."
             bowtie2-build --threads 6 /ref/ARS-UCD1.2.fa /ref/ARS-UCD1.2
