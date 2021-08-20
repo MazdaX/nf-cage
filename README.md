@@ -9,11 +9,25 @@ Pipeline has the following steps:
 5. BAM >>> bp resolution bedGraph for +ve and -ve strands >>>> bigWig
 
 # Installation
-You would need to use the docker container for reproducibility of the analysis. Please follow the installation guidelines of Docker on your system : https://docs.docker.com/get-docker/<br>
-or the desktop client (installs the engine and GUI as the same time) https://docs.docker.com/desktop/<br>
-Download the code repo and the respective docker image to your system (Tested on WSL2 Windows 10 and Linux Ubuntu 18.04 LTS) 
+
+Install the lastest NextFlow engine on your system following the instructions available at https://www.nextflow.io/<br>
+After a succesful install you should be able to query the following without any errors: 
 
 ```
+~/nf-cage$ nextflow info
+  Version: 21.04.0 build 5552
+  Created: 02-05-2021 16:22 UTC (17:22 BST)
+  System: Linux 5.10.43.3-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.7 on OpenJDK 64-Bit Server VM 11.0.9.1-internal+0-adhoc..src
+  Encoding: UTF-8 (UTF-8)
+```
+
+You would need to use the docker container for reproducibility of the analysis. Please follow the installation guidelines of Docker on your system : https://docs.docker.com/get-docker/ or the desktop client (installs the engine and GUI as the same time) https://docs.docker.com/desktop/<br>
+
+Download this code repository and the respective docker image (Tested on WSL2 Windows 10 and Linux Ubuntu 18.04 LTS) 
+
+```
+
 git clone https://github.com/MazdaX/nf-cage.git
 docker pull mazdax/nf-cage:minimal
 
@@ -30,7 +44,7 @@ nextflow run . --with-docker mazdax/nf-cage:minimal
 ```
 
 # Container and toolset
-This pipeline uses a docker container for all the tools required and the mamba environment. Please find the details at Docker hub public repository mazdax/nf-cage:
+This pipeline uses a docker container for all the tools required and the mamba environment. Please find the details at Docker hub public repository https://hub.docker.com/r/mazdax/nf-cage :
 ```
 docker pull mazdax/nf-cage
 ```
