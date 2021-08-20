@@ -39,6 +39,8 @@ process mapKeeper {
     fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
     awk '{print \$1,\$2+2}' /ref/ARS-UCD1.2.fa.fai > /ref/ref_cov
+    #The relative output issue with line 19
+    cp -r /ref/ /
     """
 }
 
