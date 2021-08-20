@@ -1,20 +1,19 @@
-<p>
-  <img width="200" ![BovReg Logo] src="/images/BV_logo.png">
-  <img align="right" width="350" ![NextFlow Logo] src="/images/NF_logo.png"> 
-  <img align="right" width="200" ![Docker Logo] src="/images/docker_logo.png"> 
-</p> <br>
+<p float="right">
+  <img align="left" width="300" ![BovReg Logo] src="/images/BV_logo.png">
+  <img align="right" width="200" ![NextFlow Logo] src="/images/NF_logo.png">  <br><br><br><br><br>
+  <img align="right" width="180" ![Docker Logo] src="/images/docker_logo.png">
+</p>
 
 # BovReg nf-cage pipeline 
 This is a CAGE analysis pipeline used in BovReg consoritum (https://www.bovreg.eu/) studies. This pipeline was wrapped using NextFlow DSL2 syntax from demultiplexing to base pair resolution and strand specific read counting <br> (i.e. compatible for import to CAGEfightR https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
 
-
-
 Pipeline has the following steps: 
 1. Demultiplexing raw CAGE sequence data using _FASTXtoolkit_ (allowed mismatch 1)
-2. Trimming CAGE tags using _tagDust2_ (HMM read architechture provided)
+2. Trimming CAGE tags using _tagDust2_ (HMM read architechture provided) 
 3. QC before and after (_FastQC_ and _MultiQC_)
-4. Mapping against reference genome (i.e. ARS-UCD1.2_btau5_0.1_Y 1000bull project) using bowtie2
+4. Mapping against reference genome [ARS-UCD1.2_Btau5.0.1Y 1000 bull project](https://sites.ualberta.ca/~stothard/1000_bull_genomes/) using bowtie2
 5. BAM >>> bp resolution bedGraph for +ve and -ve strands >>>> bigWig
+
 
 # Installation
 
