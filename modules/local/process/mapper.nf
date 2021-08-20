@@ -10,7 +10,6 @@ params.out2="$projectDir/ref"
 
 process mapKeeper {
     tag "Sourcing the reference..."
-    label "proccess_wsl"
     publishDir params.out2 , mode: 'copy', overWrite: true
     cpus 6
     maxForks 100
@@ -20,16 +19,16 @@ process mapKeeper {
         path '*ARS-UCD1.2*'
     script:
     """
-    mkdir -p $projectDir/ref
+    mkdir -p /ref
 
-    if [ -f $projectDir/ref/ARS-UCD1.2.fa ];then
+    if [ -f /ref/ARS-UCD1.2.fa ];then
         echo "Reference exists ..."
     else
         echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
         wget http://ftp.ensembl.org/pub/release-103/fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
     fi;
 
-    if [ -f $projectDir/ref/ARS-UCD1.2.1.bt2 ];then
+    if [ -f /ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
         else
             pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
@@ -47,7 +46,6 @@ process mapKeeper {
 
 process mapper {
     tag "Mapping using bowtie2..."
-    label "proccess_wsl"
     publishDir params.out , mode: 'copy', overWrite: true
     cpus 6
     maxForks 100
@@ -68,7 +66,7 @@ process mapper {
     
     script:
     """
-        mkdir -p $projectDir/bams && \
+        mkdir -p /bams && \
         bowtie2 -p 6 --met-file ${name}.metrics --very-sensitive \
         --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \
         -x /ref/ARS-UCD1.2 \

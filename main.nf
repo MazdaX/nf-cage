@@ -114,7 +114,7 @@ workflow {
                                 .flatten()
                                 .map{ it-> tuple(it.simpleName,it)}
         
-        //mapKeeper()
+        mapKeeper()
         mapper(mapping_single_channel)
 
         convert_single_channel=mapper.out.OUT_mapped

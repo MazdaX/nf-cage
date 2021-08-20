@@ -32,7 +32,7 @@ process trimmer {
 
     // For the docker runs the tools inside the scripts local are not in the right Path due to $projectDir which is not defined in the docker PATH. Needs costumising the docker PATH to explicitly declare the modules path
     """
-        $projectDir/modules/local/scripts/tagdust_2.33/src/tagdust ${directory} \
+        /modules/local/scripts/tagdust_2.33/src/tagdust ${directory} \
         -t 6 \
         -1 B:${barcode} \
         -2 F:CAGNNNG \
