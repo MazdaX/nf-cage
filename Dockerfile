@@ -22,7 +22,9 @@ RUN conda config --add channels conda-forge && \
 
 # Setting up the nf_DSL2
 COPY environment.yml /
-RUN conda env create -n nf_DSL2 mamba && conda clean -a
+RUN conda env create -n nf_DSL2 && conda install -n nf_DSL2 mamba -c conda-forge && conda clean -a
+SHELL ["conda", "activate", "-n", "nf_DSL2", "/bin/bash", "-c"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "nf_DSL2"]
 RUN mamba install -n nf_DSL2 --file /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/nf_DSL2/bin:$PATH
 
@@ -30,5 +32,5 @@ ENV PATH /opt/conda/envs/nf_DSL2/bin:$PATH
 COPY modules /modules
 
 # For posterity debugging
-RUN conda env export -n nf_DSL2_docker > /nf_DLS2_docker.yml
+RUN conda env export -n nf_DSL2 > /nf_DLS2_docker.yml
 

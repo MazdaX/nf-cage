@@ -173,10 +173,10 @@ dependencies:
     - packaging==20.9
     - pillow==8.0.1
     - pluggy==0.13.1
-    - prompt-toolkit==3.0.18
+    - prompt-toolkit
     - py==1.10.0
     - pygments==2.7.3
-    - pyinquirer==1.0.2
+    - pyinquirer
     - pyparsing==2.4.7
     - pytest==6.2.4
     - pytest-workflow==1.5.0
