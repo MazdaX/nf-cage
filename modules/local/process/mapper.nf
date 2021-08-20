@@ -32,13 +32,13 @@ process mapKeeper {
             echo "Reference exists and indices are in the right folder."
         else
             pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-            mv Bos_taurus.ARS-UCD1.2.dna.toplevel.fa ARS-UCD1.2.fa
-            samtools faidx ARS-UCD1.2.fa
+            mv Bos_taurus.ARS-UCD1.2.dna.toplevel.fa /ref/ARS-UCD1.2.fa
+            samtools faidx /ref/ARS-UCD1.2.fa
             echo "Indexing Bos_taurus.ARS-UCD1.2 for the bowtie2..."
-            bowtie2-build --threads 6 ARS-UCD1.2.fa ARS-UCD1.2
+            bowtie2-build --threads 6 /ref/ARS-UCD1.2.fa /ref/ARS-UCD1.2
     fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
-    awk '{print \$1,\$2+2}' ARS-UCD1.2.fa.fai > ref_cov
+    awk '{print \$1,\$2+2}' /ref/ARS-UCD1.2.fa.fai > /ref/ref_cov
     """
 }
 
