@@ -34,7 +34,9 @@ nextflow.enable.dsl = 2
 log.info """\
 
 ===============================================
-        nf-cage/minimal
+        nf-cage BovReg's pipeline
+        github.com/mazdax/nf-cage
+        docker pull mazdax/nf-cage
 ===============================================
 Input : Raw Illumina CAGE sequences
 Input : Barcode list TSV (i.e. sample\tbarcode)
