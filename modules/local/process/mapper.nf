@@ -22,7 +22,7 @@ process mapKeeper {
     """
     mkdir -p ref
 
-    if [ -f $projectDir/ref/ARS-UCD1.2.fa ];then
+    if [ -f /ref/ARS-UCD1.2.fa ];then
         echo "Reference exists ..."
     else
         #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
@@ -30,7 +30,7 @@ process mapKeeper {
         aria2c -x 16 https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
     fi;
 
-    if [ -f $projectDir/ref/ARS-UCD1.2.1.bt2 ];then
+    if [ -f /ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
         else
             #pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
