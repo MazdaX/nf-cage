@@ -46,17 +46,21 @@ _NB. Running this pipeline without docker would require modification of module n
 Sample FASTQ files are in the root folder (fastq_files) along with the barcodes per samples (barcode_files). Replace the files inside these 2 folders with your own experimental data in order to run the pipeline on your dataset. 
 
 ```
-nextflow run . --with-docker mazdax/nf-cage:minimal 
+nextflow run . --with-docker mazdax/nf-cage:minimal
 
 ```
 
 # Container and toolset
 This pipeline uses a docker container for all the tools required and the mamba environment. Please find the details at Docker hub public repository https://hub.docker.com/r/mazdax/nf-cage :
 ```
-docker pull mazdax/nf-cage
+docker pull mazdax/nf-cage:minimal
 ```
 The list of the tools and versions are available in the __environment.yml__ and the __Dockerfile__. 
-The aria2c compilation was modified using https://registry.hub.docker.com/r/johngong/aria2/dockerfile 
+The aria2c compilation was modified using https://registry.hub.docker.com/r/johngong/aria2/dockerfile .
+
+```
+docker build -t mazdax/nf-cage:aria2c .
+```
 
 
 
