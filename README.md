@@ -53,7 +53,7 @@ nextflow run . --with-docker mazdax/nf-cage:minimal
 # Container and toolset
 This pipeline uses a docker container for all the tools required and the mamba environment. Please find the details at Docker hub public repository https://hub.docker.com/r/mazdax/nf-cage :
 ```
-docker pull mazdax/nf-cage:minimal
+docker pull mazdax/nf-cage:latest
 ```
 The list of the tools and versions are available in the __environment.yml__ and the __Dockerfile__. 
 The aria2c compilation was modified using https://registry.hub.docker.com/r/johngong/aria2/dockerfile .
