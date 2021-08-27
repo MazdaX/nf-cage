@@ -56,6 +56,7 @@ This pipeline uses a docker container for all the tools required and the mamba e
 docker pull mazdax/nf-cage
 ```
 The list of the tools and versions are available in the __environment.yml__ and the __Dockerfile__. 
+The aria2c compilation was modified using https://registry.hub.docker.com/r/johngong/aria2/dockerfile 
 
 
 

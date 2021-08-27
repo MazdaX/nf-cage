@@ -19,30 +19,30 @@ process mapKeeper {
         path '*ARS-UCD1.2*'
     script:
     """
-    mkdir -p ~/ref
+    mkdir -p ref
 
-    if [ -f ~/ref/ARS-UCD1.2.fa ];then
+    if [ -f ref/ARS-UCD1.2.fa ];then
         echo "Reference exists ..."
     else
         #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
         #wget http://ftp.ensembl.org/pub/release-103/fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-        /modules/local/scripts/aria2c -x 16 https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
+        aria2c -x 16 https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
     fi;
 
-    if [ -f ~/ref/ARS-UCD1.2.1.bt2 ];then
+    if [ -f ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
         else
             #pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
             pigz -d -p 6 ARS-UCD1.2_Btau5.0.1Y.fa.gz
-            mv ARS-UCD1.2_Btau5.0.1Y.fa ~/ref/ARS-UCD1.2.fa
-            samtools faidx ~/ref/ARS-UCD1.2.fa
+            mv ARS-UCD1.2_Btau5.0.1Y.fa ref/ARS-UCD1.2.fa
+            samtools faidx ref/ARS-UCD1.2.fa
             echo "Indexing Bos_taurus.ARS-UCD1.2 for the bowtie2..."
-            bowtie2-build --threads 6 ~/ref/ARS-UCD1.2.fa ~/ref/ARS-UCD1.2
+            bowtie2-build --threads 6 ref/ARS-UCD1.2.fa ref/ARS-UCD1.2
     fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
-    awk '{print \$1,\$2+2}' ~/ref/ARS-UCD1.2.fa.fai > ~/ref/ref_cov
+    awk '{print \$1,\$2+2}' ref/ARS-UCD1.2.fa.fai > ref/ref_cov
     #The relative output issue with line 19
-    cp -r ~/ref/* /
+    cp -r ref/* /
     """
 }
 
