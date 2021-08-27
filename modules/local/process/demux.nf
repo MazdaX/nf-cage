@@ -42,7 +42,7 @@ process demux {
         NAME=\$(basename -s .fastq.gz $IN_fastq)
         mkdir \${NAME}
         zcat $IN_fastq |\
-        $projectDir/modules/local/scripts/fastx_0.0.13/bin/fastx_barcode_splitter.pl \
+        /modules/local/scripts/fastx_0.0.13/bin/fastx_barcode_splitter.pl \
         --bcfile $IN_barcodes \
         --bol --mismatch $params.allowed_mismatch \
         --prefix \${NAME}/ \
