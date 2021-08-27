@@ -187,4 +187,4 @@ dependencies:
     - spectra==0.0.11
     - toml==0.10.2
     - wcwidth==0.2.5
-prefix: /home/mazdax/miniconda3/envs/nf_DSL2
+
