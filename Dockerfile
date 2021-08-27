@@ -1,8 +1,5 @@
 FROM continuumio/miniconda3
-#FROM ubuntu:xenial  
-#FROM r-base
-#EXPOSE 5000
-#EXPOSE 443
+FROM alpine:3.11
 
 LABEL \
   author="Mazdak Salavati" \
@@ -34,7 +31,6 @@ COPY modules /modules
 RUN conda env export -n nf_DSL2 > /nf_DLS2_docker.yml
 
 #compiling aria2c
-FROM alpine:3.11
 ARG  ARIA2_VER=1.35.0
 RUN  apk add --no-cache ca-certificates make g++ gcc file cppunit-dev zlib-dev openssl-dev expat-dev sqlite-dev c-ares-dev libssh2-dev \
 	&&   mkdir /aria2c  \
