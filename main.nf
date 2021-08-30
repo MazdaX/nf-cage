@@ -8,7 +8,7 @@ nf-CAGE analysis pipeline
 Developed and maintained by Dr Mazdak Salavati
 #### Homepage / Documentation
 https://github.com/MazdaX/nf-cage.git
-docker pull mazdax/nf-cage:minimal
+docker pull mazdax/nf-cage:latest
 ----------------------------------------------------------------------------------------
 */
 
