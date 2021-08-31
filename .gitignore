@@ -11,17 +11,12 @@
 data/
 results/
 .DS_Store
-tests/
-testing/
-testing*
 work/*
 work
 reports/*
 reports
 fastq_files
 fastq_files/*
-index_files
-index_files/*
 demux
 demux/*
 demux/*/*

@@ -67,6 +67,7 @@ process mapper {
     output:
         path '*.bam' , emit: OUT_mapped
         path '*.metrics', emit: OUT_mapped_metrics
+        path '*.bai'
                 
     //In order to use system \$vars as well as DSL $vars
     // The issue is the for loop behaviour which cannot be invoked (process)
