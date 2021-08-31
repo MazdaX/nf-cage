@@ -4,7 +4,7 @@
 *.fastq.gz
 *.fastq
 *.html
-*.bam
+*.bam*
 *.metrics
 *.bedGraph
 .nextflow/
