@@ -36,7 +36,7 @@ Download this code repository and the respective docker image (Tested on WSL2 Wi
 ```
 
 git clone https://github.com/MazdaX/nf-cage.git
-docker pull mazdax/nf-cage:minimal
+docker pull mazdax/nf-cage:latest
 
 ```
 _NB. Running this pipeline without docker would require modification of module nf scripts and its not recommended_
