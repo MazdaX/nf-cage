@@ -14,16 +14,22 @@ process mapKeeper {
     cpus 6
     maxForks 100
     cache true
-    
+    /*
+    docker containers run by NF can NOT operate anything in the root of the instance. The bin and tmp folders that are mounted automatically by the NF are also only good for usage in PATH. The only current solution to mounting external (projectDir) folder inside the containers is to use readonly mounting points within the home folder of the running docker. 
+    */
+
+    containerOptions "-v $projectDir/ref:/home/ref:ro"
+
+    //The optional output prevents any unwanted error by the NF when the ref folder already exists
     output:
-        path 'ARS-UCD1.2*' 
-        path 'ref_cov'
+        path 'ARS-UCD1.2*' optional true
+        path 'ref_cov'  optional true
     
     script:
     """
     mkdir -p ref
 
-    if [ -s $projectDir/ref/ARS-UCD1.2.fa ];then
+    if [ -s /home/ref/ARS-UCD1.2.fa ];then
         echo "Reference exists ..."
     else
         #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
@@ -31,7 +37,7 @@ process mapKeeper {
         aria2c -x 16 https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
     fi;
 
-    if [ -s $projectDir/ref/ARS-UCD1.2.1.bt2 ];then
+    if [ -s /home/ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
     else
         #pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
@@ -54,7 +60,7 @@ process mapper {
     cpus 6
     maxForks 100
     cache true
-    containerOptions '-v $(pwd)/ref:/ref:ro'    
+    containerOptions "-v $projectDir/ref:/home/ref:ro"    
     
     input:
         tuple val(name) , path(trimmed_fastq)
@@ -71,11 +77,10 @@ process mapper {
     
     script:
     """
-        ls -halts /ref
         mkdir -p bams && \
         bowtie2 -p 6 --met-file ${name}.metrics --very-sensitive \
         --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \
-        -x /ref/ARS-UCD1.2 \
+        -x /home/ref/ARS-UCD1.2 \
         -U ${trimmed_fastq} | \
         samtools view -@ 6 -bS -F 4 | \
         samtools sort -@ 6 -o ${name}.bam

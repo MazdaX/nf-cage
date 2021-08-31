@@ -9,12 +9,12 @@ params.out="$projectDir/bams"
 
 process bG2bW {
     tag "BAM >>> bedGraph >>> BigWig ..."
-    label "proccess_wsl"
     publishDir params.out , mode: 'copy', overWrite: true
     cpus 1
     maxForks 1
     cache true
-    
+    containerOptions "-v $projectDir/ref:/home/ref:ro"
+
     input:
         tuple val(name) , path(bam)
     output:
@@ -34,9 +34,9 @@ process bG2bW {
         bedtools genomecov -ibam ${bam} -d -strand - | awk -v width=1 '!(\$1~/^NW/)&&(\$3!=0) {print \$1,\$2,\$2+width,\$3}' > ${name}.minus.bedGraph 
         sort -k 1,1 -k2,2n ${name}.plus.bedGraph > ${name}_tmp_plus
         sort -k 1,1 -k2,2n ${name}.minus.bedGraph > ${name}_tmp_mins 
-        /modules/local/scripts/UCSC/bedGraphToBigWig ${name}_tmp_plus $projectDir/ref/ref_cov ${name}.plus.bw && \
+        /modules/local/scripts/UCSC/bedGraphToBigWig ${name}_tmp_plus /home/ref/ref_cov ${name}.plus.bw && \
         rm -f ${name}_tmp_plus
-        /modules/local/scripts/UCSC/bedGraphToBigWig ${name}_tmp_minus $projectDir/ref/ref_cov ${name}.minus.bw && \
+        /modules/local/scripts/UCSC/bedGraphToBigWig ${name}_tmp_minus /home/ref/ref_cov ${name}.minus.bw && \
         rm -f ${name}_tmp_minus
         pigz *.bedGraph
     """
