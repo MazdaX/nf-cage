@@ -46,7 +46,7 @@ _NB. Running this pipeline without docker would require modification of module n
 Sample FASTQ files are in the root folder (fastq_files) along with the barcodes per samples (barcode_files). Replace the files inside these 2 folders with your own experimental data in order to run the pipeline on your dataset. 
 
 ```
-nextflow run . --with-docker mazdax/nf-cage:minimal
+nextflow run . --with-docker mazdax/nf-cage
 
 ```
 
