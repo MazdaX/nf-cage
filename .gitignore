@@ -27,5 +27,5 @@ demux/*
 demux/*/*
 trimmed
 trimme/*
-ref
 ref/*
+!ref/.gitkeep
