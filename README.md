@@ -5,11 +5,11 @@
 </p>
 
 # BovReg nf-cage pipeline 
-This is a CAGE analysis pipeline used in BovReg consoritum (https://www.bovreg.eu/) studies. This pipeline was wrapped using NextFlow DSL2 syntax from demultiplexing to base pair resolution and strand specific read counting <br> (i.e. compatible for import to CAGEfightR https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
+This is a CAGE analysis pipeline used in BovReg consortium (https://www.bovreg.eu/) studies. This pipeline was wrapped using NextFlow DSL2 syntax from demultiplexing to base pair resolution and strand specific read counting <br> (i.e. compatible for import to CAGEfightR https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
 
 Pipeline has the following steps: 
 1. Demultiplexing raw CAGE sequence data using _FASTXtoolkit_ (allowed mismatch 1)
-2. Trimming CAGE tags using _tagDust2_ (HMM read architechture provided) 
+2. Trimming CAGE tags using _tagDust2_ (HMM read architecture provided) 
 3. QC before and after (_FastQC_ and _MultiQC_)
 4. Mapping against reference genome [ARS-UCD1.2_Btau5.0.1Y 1000 bull project](https://sites.ualberta.ca/~stothard/1000_bull_genomes/) using bowtie2
 5. BAM >>> bp resolution bedGraph for +ve and -ve strands >>>> bigWig
@@ -17,8 +17,8 @@ Pipeline has the following steps:
 
 # Installation
 
-Install the lastest NextFlow engine on your system following the instructions available at https://www.nextflow.io/<br>
-After a succesful install you should be able to query the following without any errors: 
+Install the latest NextFlow engine on your system following the instructions available at https://www.nextflow.io/<br>
+After a successful install you should be able to query the following without any errors: 
 
 ```
 ~/nf-cage$ nextflow info
@@ -46,7 +46,7 @@ _NB. Running this pipeline without docker would require modification of module n
 Sample FASTQ files are in the root folder (fastq_files) along with the barcodes per samples (barcode_files). Replace the files inside these 2 folders with your own experimental data in order to run the pipeline on your dataset. 
 
 ```
-nextflow run . --with-docker mazdax/nf-cage
+nextflow run . --with-docker mazdax/nf-cage:latest
 
 ```
 
