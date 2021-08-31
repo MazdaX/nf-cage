@@ -16,7 +16,8 @@ process mapKeeper {
     cache true
     
     output:
-        path 'ref/ARS-UCD1.2*' 
+        path 'ARS-UCD1.2*' 
+        path 'ref_cov'
     
     script:
     """
@@ -53,6 +54,7 @@ process mapper {
     cpus 6
     maxForks 100
     cache true
+    containerOptions '-v $(pwd)/ref:/ref:ro'    
     
     input:
         tuple val(name) , path(trimmed_fastq)
@@ -64,15 +66,16 @@ process mapper {
     // The issue is the for loop behaviour which cannot be invoked (process)
     // more than once in a workflow. Need to solve this issue. 
 
-    //Docker addresses fir ref has the same problem as the trimmer tagdust from the modules
+    //Docker addresses for ref has the same problem as the trimmer tagdust from the modules
     //Docker optimisation is needed
     
     script:
     """
-        mkdir -p /bams && \
+        ls -halts /ref
+        mkdir -p bams && \
         bowtie2 -p 6 --met-file ${name}.metrics --very-sensitive \
         --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \
-        -x $projectDir/ref/ARS-UCD1.2 \
+        -x /ref/ARS-UCD1.2 \
         -U ${trimmed_fastq} | \
         samtools view -@ 6 -bS -F 4 | \
         samtools sort -@ 6 -o ${name}.bam
