@@ -62,6 +62,6 @@ The aria2c compilation was modified using https://registry.hub.docker.com/r/john
 docker build -t mazdax/nf-cage:aria2c .
 ```
 
-
+NB. nf-core and pyinquirer packages were manually removed from the docker builds. 
 
 

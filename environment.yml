@@ -84,6 +84,7 @@ dependencies:
   - lzo=2.10=h7b6447c_2
   - mamba=0.15.2=py38h2aa5da1_0
   - markupsafe=1.1.1=py38h7b6447c_0
+  - mysql-connector-c=6.1.11=h597af5e_1
   - ncurses=6.2=he6710b0_1
   - nextflow=21.04.0=h4a94de4_0
   - openjdk=11.0.9.1=h5cc2fde_1
@@ -125,6 +126,7 @@ dependencies:
   - tqdm=4.62.0=pyhd3eb1b0_1
   - typing-extensions=3.10.0.0=hd3eb1b0_0
   - typing_extensions=3.10.0.0=pyh06a4308_0
+  - ucsc-bedgraphtobigwig=377=h0b8a92a_2
   - unidecode=1.2.0=pyhd3eb1b0_0
   - url-normalize=1.4.3=pyhd8ed1ab_0
   - urllib3=1.26.6=pyhd3eb1b0_1
@@ -173,10 +175,9 @@ dependencies:
     - packaging==20.9
     - pillow==8.0.1
     - pluggy==0.13.1
-    - prompt-toolkit
+    - prompt-toolkit==3.0.18
     - py==1.10.0
     - pygments==2.7.3
-    - pyinquirer
     - pyparsing==2.4.7
     - pytest==6.2.4
     - pytest-workflow==1.5.0
@@ -187,4 +188,4 @@ dependencies:
     - spectra==0.0.11
     - toml==0.10.2
     - wcwidth==0.2.5
-
+prefix: /home/mazdax/miniconda3/envs/nf_DSL2
