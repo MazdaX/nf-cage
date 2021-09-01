@@ -56,7 +56,7 @@ include {bG2bW} from './modules/local/process/bedG_to_bigWig.nf'
 workflow {
         //path doesn't take relative paths but file does
         //Queue channel allows for parallel execution of all files in a FIFO queue
-        raw_fastq=channel.fromPath("$projectDir/fastq_files/*.fastq.gz")     
+        raw_fastq=channel.fromPath("$projectDir/fastq_files/*.gz")     
         
         //barcodes should be read unlimited times >>> value.channel  >>> channel.value(1)
         //a process is needed to read in the list of barcodes to a value list where they could be iterated

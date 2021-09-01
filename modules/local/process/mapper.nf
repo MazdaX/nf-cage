@@ -6,7 +6,7 @@
 nextflow.enable.dsl = 2
 
 params.out  = "$projectDir/bams"
-params.out2 = "$projectDir/ref"
+params.out2 = "$projectDir/"
 
 process mapKeeper {
     tag "Sourcing the reference..."
