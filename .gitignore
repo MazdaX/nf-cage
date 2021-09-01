@@ -1,12 +1,13 @@
 .nextflow*
 *.pyc
 *.log*
-*.fastq.gz
-*.fastq
+*.fastq*
+*.fq*
 *.html
 *.bam*
 *.metrics
-*.bedGraph
+*.bedGraph*
+*.bw
 .nextflow/
 data/
 results/
