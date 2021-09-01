@@ -19,9 +19,9 @@ params.out="$projectDir/reports"
 
 process fastqc {
     tag "FastQC..."
-    label "process_wsl"
+    
     publishDir params.out , mode:'copy', overwrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
 
@@ -40,11 +40,11 @@ process fastqc {
 
 process multiqc {
     tag "MultiQC..."
-    label "process_wsl"
+    
     //Publish is the final output directory
     publishDir "$projectDir/reports", mode:'copy'
-    cpus 1
-    maxForks 1
+    cpus params.all_threads
+    maxForks 10
     cache true
     
 

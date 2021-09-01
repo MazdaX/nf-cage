@@ -20,7 +20,7 @@ process demux {
     tag "Demultiplexing..."
     label "proccess_wsl"
     publishDir params.out , mode: 'copy', overWrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
     //afterScript 'echo "Done!!" > reporter.txt'
@@ -56,7 +56,7 @@ process merger {
     tag "Gathering demux..."
     label "proccess_wsl"
     publishDir params.out , mode: 'copy' , overWrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
     
@@ -69,7 +69,7 @@ process merger {
     for d in ${directory};do 
         cat \${d}/${sample}.fastq >> ${sample}.fastq
     done;
-    pigz --force -p 6 ${sample}.fastq
+    pigz --force -p $params.all_threads ${sample}.fastq
             
     """
 }

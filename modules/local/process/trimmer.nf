@@ -16,7 +16,7 @@ process trimmer {
     tag "Trimming by TagDust2..."
     label "proccess_wsl"
     publishDir params.out , mode: 'copy', overWrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
     
@@ -33,7 +33,7 @@ process trimmer {
     // For the docker runs the tools inside the scripts local are not in the right Path due to $projectDir which is not defined in the docker PATH. Needs costumising the docker PATH to explicitly declare the modules path
     """
         /modules/local/scripts/tagdust_2.33/src/tagdust ${directory} \
-        -t 6 \
+        -t $params.all_threads \
         -1 B:${barcode} \
         -2 F:CAGNNNG \
         -3 R:N \
@@ -41,7 +41,7 @@ process trimmer {
         -dust 100  \
         -o ${sample}
         
-        pigz --force -p 6 ${sample}_BC_${barcode}.fq
+        pigz --force -p $params.all_threads ${sample}_BC_${barcode}.fq
         rm -f ${sample}_un.fq
     """
        

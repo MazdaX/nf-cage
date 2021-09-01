@@ -10,7 +10,7 @@ params.out="$projectDir/bams"
 process bG2bW {
     tag "BAM >>> bedGraph >>> BigWig ..."
     publishDir params.out , mode: 'copy', overWrite: true
-    cpus 1
+    cpus params.all_threads
     maxForks 1
     cache true
     containerOptions "-v $projectDir/ref:/home/ref:ro"
@@ -38,7 +38,7 @@ process bG2bW {
         rm -f ${name}_tmp_plus
         bedGraphToBigWig ${name}_tmp_minus /home/ref/ref_cov ${name}.minus.bw && \
         rm -f ${name}_tmp_minus
-        pigz *.bedGraph
+        pigz -p $params.all_threads *.bedGraph
     """
           
 }

@@ -11,7 +11,7 @@ params.out2 = "$projectDir/ref"
 process mapKeeper {
     tag "Sourcing the reference..."
     publishDir params.out2 , mode: 'copy', overWrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
     /*
@@ -22,8 +22,8 @@ process mapKeeper {
 
     //The optional output prevents any unwanted error by the NF when the ref folder already exists
     output:
-        path 'ARS-UCD1.2*' optional true
-        path 'ref_cov'  optional true
+        path 'ref/ARS-UCD1.2*' optional true
+        path 'ref/ref_cov'  optional true
     
     script:
     """
@@ -40,12 +40,12 @@ process mapKeeper {
     if [ -s /home/ref/ARS-UCD1.2.1.bt2 ];then
             echo "Reference exists and indices are in the right folder."
     else
-        #pigz -d -p 6 Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-        pigz -d -p 6 ARS-UCD1.2_Btau5.0.1Y.fa.gz
+        #pigz -d -p $params.all_threads Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
+        pigz -d -p $params.all_threads ARS-UCD1.2_Btau5.0.1Y.fa.gz
         mv ARS-UCD1.2_Btau5.0.1Y.fa ref/ARS-UCD1.2.fa
         samtools faidx ref/ARS-UCD1.2.fa
         echo "Indexing Bos_taurus.ARS-UCD1.2 for the bowtie2..."
-        bowtie2-build --threads 6 ref/ARS-UCD1.2.fa ref/ARS-UCD1.2
+        bowtie2-build --threads $params.all_threads ref/ARS-UCD1.2.fa ref/ARS-UCD1.2
         #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
         awk '{print \$1,\$2+2}' ref/ARS-UCD1.2.fa.fai > ref/ref_cov
     fi;
@@ -57,7 +57,7 @@ process mapKeeper {
 process mapper {
     tag "Mapping using bowtie2..."
     publishDir params.out , mode: 'copy', overWrite: true
-    cpus 6
+    cpus params.all_threads
     maxForks 100
     cache true
     containerOptions "-v $projectDir/ref:/home/ref:ro"    
@@ -79,12 +79,12 @@ process mapper {
     script:
     """
         mkdir -p bams && \
-        bowtie2 -p 6 --met-file ${name}.metrics --very-sensitive \
+        bowtie2 -p $params.all_threads --met-file ${name}.metrics --very-sensitive \
         --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \
         -x /home/ref/ARS-UCD1.2 \
         -U ${trimmed_fastq} | \
-        samtools view -@ 6 -bS -F 4 | \
-        samtools sort -@ 6 -o ${name}.bam
+        samtools view -@ $params.all_threads -bS -F 4 | \
+        samtools sort -@ $params.all_threads -o ${name}.bam
         samtools index ${name}.bam
 
     """
