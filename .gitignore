@@ -25,5 +25,5 @@ trimme/*
 ref/*
 !ref/.gitkeep
 !fastq_files/.gitkeep
-!fastq_files/CAGE_00_fastq.gz
-!fastq_files/CAGE_01_fastq.gz
+!fastq_files/CAGE_00.fastq.gz
+!fastq_files/CAGE_01.fastq.gz
