@@ -63,5 +63,7 @@ docker build -t mazdax/nf-cage:aria2c .
 ```
 
 NB. nf-core and pyinquirer packages were manually removed from the docker builds. 
+NB. The main branch contains tested pipeline and for nf-core compatibility a "nfcore_opt" branch was created
+
 
 
