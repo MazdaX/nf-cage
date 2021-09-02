@@ -16,7 +16,6 @@ work/*
 work
 reports/*
 reports
-fastq_files
 fastq_files/*
 demux
 demux/*
@@ -25,3 +24,4 @@ trimmed
 trimme/*
 ref/*
 !ref/.gitkeep
+!fastq_files/.gitkeep
