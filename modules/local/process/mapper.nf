@@ -8,51 +8,54 @@ nextflow.enable.dsl = 2
 params.out  = "$projectDir/bams"
 params.out2 = "$projectDir/"
 
-process mapKeeper {
+process downloadRef {
     tag "Sourcing the reference..."
-    publishDir params.out2 , mode: 'copy', overWrite: true
+    publishDir "${params.out2}/ref" , mode: 'copy', overWrite: true
     cpus params.all_threads
     maxForks 100
     cache true
-    /*
-    docker containers run by NF can NOT operate anything in the root of the instance. The bin and tmp folders that are mounted automatically by the NF are also only good for usage in PATH. The only current solution to mounting external (projectDir) folder inside the containers is to use readonly mounting points within the home folder of the running docker. 
-    */
 
-    containerOptions "-v $projectDir/ref:/home/ref:ro"
-
-    //The optional output prevents any unwanted error by the NF when the ref folder already exists
+    input:
+        val fasta
+        
     output:
-        path 'ref/ARS-UCD1.2*' optional true
-        path 'ref/ref_cov'  optional true
-    
+        path '*.fa', emit: fasta
+
+    script:
+    """
+    #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
+    #wget $fasta
+    aria2c -x 16 $fasta
+
+    pigz -d -p $params.all_threads *.fa.gz
+    """
+}
+
+process bowtie2Build {
+    tag "Bowtie2 build..."
+    publishDir "${params.out2}/ref" , mode: 'copy', overWrite: true
+    cpus params.all_threads
+    maxForks 100
+    cache true
+
+    input:
+        path fasta
+    output:
+        path 'ref', emit: bowtie_index
+        path 'ref_cov', emit: ref_cov
+
     script:
     """
     mkdir -p ref
 
-    if [ -s /home/ref/ARS-UCD1.2.fa ];then
-        echo "Reference exists ..."
-    else
-        #echo "Downloading Bos_taurus.ARS-UCD1.2 from Ensembl v103..."
-        #wget http://ftp.ensembl.org/pub/release-103/fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-        aria2c -x 16 https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz
-    fi;
+    samtools faidx $fasta
 
-    if [ -s /home/ref/ARS-UCD1.2.1.bt2 ];then
-            echo "Reference exists and indices are in the right folder."
-    else
-        #pigz -d -p $params.all_threads Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz
-        pigz -d -p $params.all_threads ARS-UCD1.2_Btau5.0.1Y.fa.gz
-        mv ARS-UCD1.2_Btau5.0.1Y.fa ref/ARS-UCD1.2.fa
-        samtools faidx ref/ARS-UCD1.2.fa
-        echo "Indexing Bos_taurus.ARS-UCD1.2 for the bowtie2..."
-        bowtie2-build --threads $params.all_threads ref/ARS-UCD1.2.fa ref/ARS-UCD1.2
-        #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
-        awk '{print \$1,\$2+2}' ref/ARS-UCD1.2.fa.fai > ref/ref_cov
-    fi;
+    echo "Indexing ${fasta} for bowtie2..."
+    bowtie2-build --threads $params.all_threads ${fasta} ref/${fasta.baseName}
+    #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
+    awk '{print \$1,\$2+2}' ${fasta}.fai > ref_cov
     """
 }
-
-
 
 process mapper {
     tag "Mapping using bowtie2..."
@@ -60,10 +63,10 @@ process mapper {
     cpus params.all_threads
     maxForks 100
     cache true
-    containerOptions "-v $projectDir/ref:/home/ref:ro"    
     
     input:
         tuple val(name) , path(trimmed_fastq)
+        path bowtie_index
     output:
         path '*.bam' , emit: OUT_mapped
         path '*.metrics', emit: OUT_mapped_metrics
@@ -78,15 +81,15 @@ process mapper {
     
     script:
     """
-        mkdir -p bams && \
-        bowtie2 -p $params.all_threads --met-file ${name}.metrics --very-sensitive \
-        --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \
-        -x /home/ref/ARS-UCD1.2 \
-        -U ${trimmed_fastq} | \
-        samtools view -@ $params.all_threads -bS -F 4 | \
+        INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+
+        mkdir -p bams && \\
+        bowtie2 -p $params.all_threads --met-file ${name}.metrics --very-sensitive \\
+        --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
+        -x \$INDEX \\
+        -U ${trimmed_fastq} | \\
+        samtools view -@ $params.all_threads -bS -F 4 | \\
         samtools sort -@ $params.all_threads -o ${name}.bam
         samtools index ${name}.bam
-
     """
-       
 }
