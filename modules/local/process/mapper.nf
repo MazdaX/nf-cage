@@ -81,15 +81,15 @@ process mapper {
     
     script:
     """
-        INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
 
-        mkdir -p bams && \\
-        bowtie2 -p $params.all_threads --met-file ${name}.metrics --very-sensitive \\
-        --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
-        -x \$INDEX \\
-        -U ${trimmed_fastq} | \\
-        samtools view -@ $params.all_threads -bS -F 4 | \\
-        samtools sort -@ $params.all_threads -o ${name}.bam
-        samtools index ${name}.bam
+    mkdir -p bams && \\
+    bowtie2 -p $params.all_threads --met-file ${name}.metrics --very-sensitive \\
+    --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
+    -x \$INDEX \\
+    -U ${trimmed_fastq} | \\
+    samtools view -@ $params.all_threads -bS -F 4 | \\
+    samtools sort -@ $params.all_threads -o ${name}.bam
+    samtools index ${name}.bam
     """
 }
