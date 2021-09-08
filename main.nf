@@ -50,7 +50,7 @@ Running task: $params.all_in_one
 include {demuxMaker;demux;merger} from './modules/local/process/demux.nf'
 include {trimKeeper;trimmer} from './modules/local/process/trimmer.nf'
 include {reportsMaker;fastqc as qc_pre;fastqc as qc_post;multiqc} from './modules/local/process/fastqc_multiqc.nf'
-include {mapKeeper; mapper} from './modules/local/process/mapper.nf'
+include {downloadRef; bowtie2Build; mapper} from './modules/local/process/mapper.nf'
 include {bG2bW} from './modules/local/process/bedG_to_bigWig.nf'
 
 workflow {
@@ -62,7 +62,9 @@ workflow {
         //a process is needed to read in the list of barcodes to a value list where they could be iterated
         barcodes=channel.value("$projectDir/barcode_files/barcode.list")
 
-        
+        // reference fasta file
+        fasta=channel.value('https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz')
+ 
         //AIO workflow
         reportsMaker()
         qc_pre(raw_fastq) 
@@ -86,7 +88,7 @@ workflow {
         //Need to emit the merger output so it can be pegged to the qc_post
         fastqc_single_channel=merger.out.OUT_merger
                                 .flatten()
-                                       
+
         // This post QC should get the merged files not individuals
         qc_post(fastqc_single_channel)
         
@@ -96,7 +98,6 @@ workflow {
                         
         multiqc(demux_single_channel.collect())
         
-
         trimmer_single_channel=merger.out.OUT_merger
                                  .flatten()
                                  .map { it->tuple( it.simpleName,it ) }
@@ -116,8 +117,12 @@ workflow {
                                 .flatten()
                                 .map{ it-> tuple(it.simpleName,it)}
         
-        mapKeeper()
-        mapper(mapping_single_channel)
+        // Downloading reference fasta file
+        downloadRef(fasta)
+        // Build bowtie2 index
+        bowtie2Build(downloadRef.out.fasta)
+        // Mappping reads
+        mapper(mapping_single_channel, bowtie2Build.out.bowtie_index)
 
         convert_single_channel=mapper.out.OUT_mapped
                                 .flatten()
