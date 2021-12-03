@@ -49,7 +49,7 @@ Running task: $params.all_in_one
 //include {module as module_alias; module as module_alias2}
 include {demuxMaker;demux;merger} from './modules/local/process/demux.nf'
 include {trimKeeper;trimmer} from './modules/local/process/trimmer.nf'
-include {reportsMaker;fastqc as qc_pre;fastqc as qc_post;multiqc} from './modules/local/process/fastqc_multiqc.nf'
+include {tmpMaker;reportsMaker;fastqc as qc_pre;fastqc as qc_post;multiqc} from './modules/local/process/fastqc_multiqc.nf'
 include {downloadRef; bowtie2Build; mapper} from './modules/local/process/mapper.nf'
 include {bG2bW} from './modules/local/process/bedG_to_bigWig.nf'
 
@@ -64,9 +64,11 @@ workflow {
 
         // reference fasta file
         fasta=channel.value('https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz')
+	//fasta=channel.value('http://ftp.ensembl.org/pub/release-104/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz')
  
         //AIO workflow
         reportsMaker()
+	tmpMaker()
         qc_pre(raw_fastq) 
         // emit index 1 is the html files
         // emit index 0 is the zip files

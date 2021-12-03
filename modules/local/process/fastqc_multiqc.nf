@@ -11,6 +11,12 @@ def reportsMaker() {
   result=cmd.execute().text
 }
 
+def tmpMaker() {
+  cmd="""mkdir -p $projectDir/tmp"""
+  result=cmd.execute().text
+}
+
+
 
 //params.in still doesn't work as intended
 //params.in="$projectDir/fastq_files/*.fastq.gz"
