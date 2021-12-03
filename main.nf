@@ -129,6 +129,7 @@ workflow {
         convert_single_channel=mapper.out.OUT_mapped
                                 .flatten()
                                 .map{ it-> tuple(it.simpleName,it)}
+        convert_single_channel.view()
 
         bG2bW(convert_single_channel)
         
