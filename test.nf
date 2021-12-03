@@ -10,7 +10,7 @@ workflow {
                                                     .split('_')[0]                                                    
                                                     ,it) }
                                 
-    //convert_single_channel.view()
-    bG2bW(convert_single_channel)
+    convert_single_channel.view()
+    //bG2bW(convert_single_channel)
 
 }
