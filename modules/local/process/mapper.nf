@@ -50,11 +50,12 @@ process bowtie2Build {
 
     samtools faidx $fasta
 
-    if [ -s "$projectDir/ref/*.bt2" ]; then
-	echo "Bowtie2 indexes already exist"
+    #if [ -s "$projectDir/ref/*.bt2" ]; then
+    if [[ 'ls -1 $projectDir/ref/ref/*.bt2|wc -l' > 4 ]]; then
+	    echo "Bowtie2 indexes already exist"
     else
-	echo "Indexing ${fasta} for bowtie2..."
-	bowtie2-build --threads $params.all_threads ${fasta} ref/${fasta.baseName}
+	    echo "Indexing ${fasta} for bowtie2..."
+	    bowtie2-build --threads $params.all_threads ${fasta} ref/${fasta.baseName}
     fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
     awk '{print \$1,\$2+2}' ${fasta}.fai > ref_cov
