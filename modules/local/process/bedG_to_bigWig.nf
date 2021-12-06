@@ -10,8 +10,8 @@ params.out="$projectDir/bams"
 process bG2bW {
     tag "BAM >>> bedGraph >>> BigWig ..."
     publishDir params.out , mode: 'copy', overWrite: true
-    cpus params.all_threads
-    //maxForks 100
+    cpus = 1
+    maxForks 100
     cache true
     //containerOptions "-v $projectDir/ref:/home/ref:ro"
 
