@@ -10,6 +10,8 @@ params.out="$projectDir/bams"
 process bG2bW {
     tag "BAM >>> bedGraph >>> BigWig ..."
     publishDir params.out , mode: 'copy', overWrite: true
+    //cpus params.all_threads
+    //Using only 1 CPU created the parrallel effect needed to speed up he bedtools step
     cpus = 1
     maxForks 100
     cache true
