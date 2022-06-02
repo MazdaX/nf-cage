@@ -1,75 +1,56 @@
 #!/usr/bin/env nextflow
 
-// The $baseDir is an env variable in DSL2
-
 //Enabling the DSL2 syntax 
 nextflow.enable.dsl=2
 
-def demuxMaker() {
-  cmd="""mkdir -p $projectDir/demux"""
-  result=cmd.execute().text
-}
-
 //Should be coded for ARG in the future
 params.allowed_mismatch = 1
-//params.in="$projectDir/fastq_files/*.fastq.gz"
-params.out="$projectDir/demux"
-//params.out2="$projectDir/demux/CAGE*/*.fastq"
 
-process demux {
+process DEMUX {
     tag "Demultiplexing..."
     label "proccess_wsl"
-    publishDir params.out , mode: 'copy', overWrite: true
-    cpus params.all_threads
-    maxForks 100
-    cache true
-    //afterScript 'echo "Done!!" > reporter.txt'
-    
+    //Redundancy to save space
+    //publishDir "$projectDir/demux/${sample_id}" , pattern: "*.fastq", mode: 'copy', overWrite: true
+    cache true    
 
     input:
-        path IN_fastq               //the name of path variable should differ from workflow variable declarations
-        path IN_barcodes
-        params.allowed_mismatch
-
+        tuple val( sample_id ), path( fastq_ch )
+        path( barcode )
+        
     output:
-        path '**/*.fastq' , emit: OUT_demux
+        path "CAGE_*.fastq" , emit: OUT_demux
                 
-    //In order to use system \$vars as well as DSL $vars
-    // The issue is the for loop behaviour which cannot be invoked (process)
-    // more than once in a workflow. Need to solve this issue. 
     script:
     """
-        NAME=\$(basename -s .fastq.gz $IN_fastq)
-        mkdir \${NAME}
-        zcat $IN_fastq |\
+        mkdir ${sample_id}
+        zcat $fastq_ch |\
         /modules/local/scripts/fastx_0.0.13/bin/fastx_barcode_splitter.pl \
-        --bcfile $IN_barcodes \
+        --bcfile $barcode \
         --bol --mismatch $params.allowed_mismatch \
-        --prefix \${NAME}/ \
-        --suffix ".fastq" 
+        --prefix "${sample_id}_" \
+        --suffix ".fastq"
+        
     """
        
 }
 
 
-process merger {
+process MERGER {
     tag "Gathering demux..."
-    label "proccess_wsl"
-    publishDir params.out , mode: 'copy' , overWrite: true
-    cpus params.all_threads
-    maxForks 100
+    //label "proccess_wsl"
+    publishDir "$projectDir/demux/",pattern: "*.fastq.gz", mode: 'copy' , overWrite: true
     cache true
     
     input:
-        tuple val(sample), path(directory)
+        tuple val(sample_id), path(directory)
     output:
-        path '**.f*q.gz' , emit: OUT_merger
+        path( '**.f*q.gz' ), emit: OUT_merger
     script:
+    
+    //Needs fixing based on the input tuple
     """
-    for d in ${directory};do 
-        cat \${d}/${sample}.fastq >> ${sample}.fastq
-    done;
-    pigz --force -p $params.all_threads ${sample}.fastq
+    cat ${directory} > ${sample_id}.fastq
+    pigz --force ${sample_id}.fastq
             
     """
 }

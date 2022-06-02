@@ -1,15 +1,7 @@
 #!/usr/bin/env nextflow
 
-//demux, merge, fastqc and multiqc of Cattle CAGE datasets
-// The $baseDir is an env variable in DSL2
-
 //Enabling the DSL2 syntax 
 nextflow.enable.dsl=2
-
-def reportsMaker() {
-  cmd="""mkdir -p $projectDir/reports"""
-  result=cmd.execute().text
-}
 
 def tmpMaker() {
   cmd="""mkdir -p $projectDir/tmp"""
@@ -17,51 +9,44 @@ def tmpMaker() {
 }
 
 
-
-//params.in still doesn't work as intended
-//params.in="$projectDir/fastq_files/*.fastq.gz"
-params.out="$projectDir/reports"
-
-
-process fastqc {
-    tag "FastQC..."
+process FASTQC {
+    tag "Running FastQC..."
     
-    publishDir params.out , mode:'copy', overwrite: true
-    cpus params.all_threads
-    maxForks 100
+    publishDir "$projectDir/reports/${sample_id}" , mode:'copy', overwrite: true
     cache true
-
+    debug false
+    
     input:
-      path IN_fastq
+      tuple val(sample_id), path(fastq_ch)
     output:
-      path "*.zip" , emit: fastqc_zip_file
-      path "*.html", emit: fastqc_html_file
+      path( "*.zip" ), emit: fastqc_zips
+      path( "*.html" ), emit: fastqc_htmls
    
     script:
       """
-      fastqc --no-extract $IN_fastq 
+      fastqc --no-extract $fastq_ch 
       """    
 }
 
 
-process multiqc {
-    tag "MultiQC..."
+process MULTIQC {
+    tag "Running MultiQC..."
     
     //Publish is the final output directory
     publishDir "$projectDir/reports", mode:'copy'
-    cpus params.all_threads
-    maxForks 10
     cache true
-    
+    debug false
 
     input:
-      path OUT_fastqc    
+      path fastqc_zips
+
     output:
-      path "multiqc_*.html"
-      path "multiqc_data"
+      path( "multiqc_*.html" )
+      path( "multiqc_data" )
+
     script:
       """
-      multiqc  $OUT_fastqc
+      multiqc  $fastqc_zips
       """
 }
 
