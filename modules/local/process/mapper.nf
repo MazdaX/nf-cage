@@ -13,7 +13,7 @@ process DOWNLOADREF {
         val fasta_url
         
     output:
-        path '*.fa', emit: fasta
+        path '*.fa'
     
     script:
     """
@@ -26,26 +26,27 @@ process DOWNLOADREF {
 process BT2BUILD {
     tag "Bowtie2 build..."
     publishDir "$projectDir/ref" , mode: 'copy', overWrite: true
-    maxForks 100
+    //bowtie2-build refuses to take more than 1 cpu
+    cpus 8
     cache true
 
     input:
-        path 'fasta'
+        path fasta
     output:
-        path 'ref', emit: bowtie_index
+        path '*.bt2' , emit: bowtie_index , optional: true
+        path '*.fai'
         path 'ref_cov', emit: ref_cov
 
     script:
     """
-    mkdir -p ref
-
     samtools faidx $fasta
-
-    if [ -s "$projectDir/ref/*.bt2" ]; then
+    files=\$(ls $projectDir/ref/*.bt2 2> /dev/null | wc -l)
+    
+    if [ **"\$files" != "0"**  ]; then
 	    echo "Bowtie2 indexes already exist"
     else
 	    echo "Indexing ${fasta} for bowtie2..."
-	    bowtie2-build --threads $task.cpus ${fasta} ref/${fasta.baseName}
+	    bowtie2-build --threads $task.cpus ${fasta} ${fasta.baseName}
     fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
     awk '{print \$1,\$2+2}' ${fasta}.fai > ref_cov
@@ -55,12 +56,11 @@ process BT2BUILD {
 process BT2MAPPER {
     tag "Mapping using bowtie2..."
     publishDir "$projectDir/bams" , mode: 'copy', overWrite: true
-    maxForks 100
     cache true
     
     input:
         tuple val(name) , path(trimmed_fastq)
-        path bowtie_index
+
     output:
         path '*.bam' , emit: OUT_mapped
         path '*.metrics', emit: OUT_mapped_metrics
@@ -75,9 +75,8 @@ process BT2MAPPER {
     
     script:
     """
-    INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    INDEX=`find -L $projectDir/ref/ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
 
-    mkdir -p bams && \\
     bowtie2 -p $task.cpus --met-file ${name}.metrics --very-sensitive \\
     --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
     -x \$INDEX \\

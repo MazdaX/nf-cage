@@ -51,7 +51,7 @@ include {DEMUX;MERGER} from './modules/local/process/demux.nf'
 include {TRIMMER} from './modules/local/process/trimmer.nf'
 include {tmpMaker;FASTQC as qc_pre;FASTQC as qc_post;MULTIQC} from './modules/local/process/fastqc_multiqc.nf'
 include {DOWNLOADREF; BT2BUILD; BT2MAPPER} from './modules/local/process/mapper.nf'
-include {bG2bW} from './modules/local/process/bedG_to_bigWig.nf'
+include {BG2BW} from './modules/local/process/bedG_to_bigWig.nf'
 
 params.ref_fasta = 'https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz'
 
@@ -116,17 +116,16 @@ workflow {
         DOWNLOADREF(Channel.of(params.ref_fasta))
         
         // Build bowtie2 index
-        BT2BUILD(DOWNLOADREF.out.fasta)
+        BT2BUILD(DOWNLOADREF.out)
         // Mappping reads
-        BT2MAPPER(mapping_single_ch, BT2BUILD.out.bowtie_index)
-        /*
-        convert_single_channel=mapper.out.OUT_mapped
+        BT2MAPPER(mapping_single_ch)
+        
+        convert_single_channel=BT2MAPPER.out.OUT_mapped
                                 .flatten()
                                 .map{ it-> tuple(it.simpleName,it)}
-        convert_single_channel.view()
-
-        bG2bW(convert_single_channel)
-        */
+        
+        BG2BW(convert_single_channel)
+        
 }
 
 
