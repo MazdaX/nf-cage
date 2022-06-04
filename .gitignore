@@ -28,3 +28,4 @@ ref/*
 !fastq_files/CAGE_00.fastq.gz
 !fastq_files/CAGE_01.fastq.gz
 test.nf
+[:]/
