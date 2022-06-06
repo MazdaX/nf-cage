@@ -7,7 +7,7 @@ nextflow.enable.dsl=2
 process BG2BW {
     tag "BAM >>> bedGraph >>> BigWig ..."
     publishDir "$projectDir/bams" , mode: 'copy', overWrite: true
-    maxForks 4   
+    //maxForks 4   
     cache true
 
     input:
