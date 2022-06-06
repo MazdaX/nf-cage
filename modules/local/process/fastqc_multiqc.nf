@@ -11,7 +11,8 @@ def tmpMaker() {
 
 process FASTQC {
     tag "Running FastQC..."
-    
+    label "small"
+
     publishDir "$projectDir/reports/${sample_id}" , mode:'copy', overwrite: true
     cache true
     debug false
@@ -31,7 +32,8 @@ process FASTQC {
 
 process MULTIQC {
     tag "Running MultiQC..."
-    
+    label "small"
+
     //Publish is the final output directory
     publishDir "$projectDir/reports", mode:'copy'
     cache true

@@ -5,6 +5,8 @@ nextflow.enable.dsl = 2
 
 process DOWNLOADREF {
     tag "Sourcing the reference..."
+    label "small"
+
     publishDir "$projectDir/ref" , mode: 'copy', overWrite: true
     maxForks 100
     cache true
@@ -27,7 +29,7 @@ process BT2BUILD {
     tag "Bowtie2 build..."
     publishDir "$projectDir/ref" , mode: 'copy', overWrite: true
     //bowtie2-build refuses to take more than 1 cpu
-    cpus 8
+    label "medium"
     cache true
 
     input:
@@ -55,6 +57,8 @@ process BT2BUILD {
 
 process BT2MAPPER {
     tag "Mapping using bowtie2..."
+    label "medium"
+
     publishDir "$projectDir/bams" , mode: 'copy', overWrite: true
     cache true
     

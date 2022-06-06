@@ -8,7 +8,7 @@ params.allowed_mismatch = 1
 
 process DEMUX {
     tag "Demultiplexing..."
-    label "proccess_wsl"
+    label "small"
     //Redundancy to save space
     //publishDir "$projectDir/demux/${sample_id}" , pattern: "*.fastq", mode: 'copy', overWrite: true
     cache true    
@@ -37,6 +37,7 @@ process DEMUX {
 
 process MERGER {
     tag "Gathering demux..."
+    label "small"
     //label "proccess_wsl"
     publishDir "$projectDir/demux/",pattern: "*.fastq.gz", mode: 'copy' , overWrite: true
     cache true
