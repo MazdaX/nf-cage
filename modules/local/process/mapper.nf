@@ -42,14 +42,14 @@ process BT2BUILD {
     script:
     """
     samtools faidx $fasta
-    files=\$(ls $projectDir/ref/*.bt2 2> /dev/null | wc -l)
-    
-    if [ **"\$files" != "0"**  ]; then
-	    echo "Bowtie2 indexes already exist"
-    else
-	    echo "Indexing ${fasta} for bowtie2..."
+    #files=\$(ls $projectDir/ref/*.bt2 2> /dev/null | wc -l)
+    #
+    #if [ **"\$files" != "0"**  ]; then
+	#    echo "Bowtie2 indexes already exist"
+    #else
+	#    echo "Indexing ${fasta} for bowtie2..."
 	    bowtie2-build --threads $task.cpus ${fasta} ${fasta.baseName}
-    fi
+    #fi
     #the 1000bull genome MT is longer than ENSEMBL and this file should be reproduced for the 1KB runs
     awk '{print \$1,\$2+2}' ${fasta}.fai > ref_cov
     """
