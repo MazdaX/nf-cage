@@ -35,7 +35,7 @@ process BT2BUILD {
     input:
         path fasta
     output:
-        path '*.bt2' , emit: bowtie_index , optional: true
+        path '*.bt2' , emit: bowtie_index , optional: false
         path '*.fai'
         path 'ref_cov', emit: ref_cov
 
