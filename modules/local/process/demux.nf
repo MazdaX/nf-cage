@@ -37,7 +37,7 @@ process DEMUX {
 
 process MERGER {
     tag "Gathering demux..."
-    label "small"
+    label 'small'
     //label "proccess_wsl"
     publishDir "$projectDir/demux/",pattern: "*.fastq.gz", mode: 'copy' , overWrite: true
     cache true

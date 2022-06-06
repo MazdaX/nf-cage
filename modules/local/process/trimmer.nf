@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 process TRIMMER {
     tag "Trimming by TagDust2..."
-    label "medium"
+    label 'medium'
     
     publishDir "$projectDir/trimmed" , mode: 'copy', overWrite: true
     maxForks 100
