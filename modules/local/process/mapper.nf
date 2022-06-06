@@ -35,7 +35,7 @@ process BT2BUILD {
     input:
         path fasta
     output:
-        path '*.bt2' , emit: bowtie_index , optional: false
+        path '*.bt2' , emit: bowtie_index , optional: true
         path '*.fai'
         path 'ref_cov', emit: ref_cov
 
@@ -64,7 +64,7 @@ process BT2MAPPER {
     
     input:
         tuple val(name) , path(trimmed_fastq)
-        path 'bt2index'
+        path bowtie_index
 
     output:
         path '*.bam' , emit: OUT_mapped
@@ -80,7 +80,7 @@ process BT2MAPPER {
     
     script:
     """
-    INDEX=`find -L $projectDir/ref/ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
 
     bowtie2 -p $task.cpus --met-file ${name}.metrics --very-sensitive \\
     --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
