@@ -120,7 +120,7 @@ workflow {
         // Build bowtie2 index
         BT2BUILD(DOWNLOADREF.out)
         // Mappping reads
-        BT2MAPPER(mapping_single_ch)
+        BT2MAPPER(mapping_single_ch,BT2BUILD.out.bowtie2_index)
         
         convert_single_channel=BT2MAPPER.out.OUT_mapped
                                 .flatten()

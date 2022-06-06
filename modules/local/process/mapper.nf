@@ -64,6 +64,7 @@ process BT2MAPPER {
     
     input:
         tuple val(name) , path(trimmed_fastq)
+        path 'bt2index'
 
     output:
         path '*.bam' , emit: OUT_mapped
