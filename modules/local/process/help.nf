@@ -23,8 +23,8 @@ def helpMessage() {
     Written by Mazdak Salavati (Twitter @MazdakS)
 
 This is a CAGE analysis pipeline used in the BovReg consortium project (https://www.bovreg.eu/). This pipeline was wrapped using NextFlow DSL2 syntax from
-demultiplexing to base pair resolution and strand specific read counting. The output for each single end FASTQ file are 2 bedGraph (+,-strands) bp resolution 
-CAGE tag counts. The bedGraph outputs can be directly used in the CAGEfightR package (https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
+demultiplexing to base pair resolution and strand specific read counting. The output for each single end FASTQ file are 2 bedGraph/bigWig (+,-strands) bp resolution 
+CAGE tag counts. The bedGraph/bigWig outputs can be directly used in the CAGEfightR package (https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
 
 Pipeline has the following steps:
 
