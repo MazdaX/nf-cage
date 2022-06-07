@@ -22,10 +22,10 @@ After a successful install you should be able to query the following without any
 
 ```
 ~/nf-cage$ nextflow info
-  Version: 21.04.0 build 5552
-  Created: 02-05-2021 16:22 UTC (17:22 BST)
-  System: Linux 5.10.43.3-microsoft-standard-WSL2
-  Runtime: Groovy 3.0.7 on OpenJDK 64-Bit Server VM 11.0.9.1-internal+0-adhoc..src
+  Version: 22.04.3 build 5703
+  Created: 18-05-2022 19:22 UTC (20:22 BST)
+  System: Linux 5.10.102.1-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.10 on OpenJDK 64-Bit Server VM 11.0.9.1-internal+0-adhoc..src
   Encoding: UTF-8 (UTF-8)
 ```
 
@@ -40,13 +40,21 @@ docker pull mazdax/nf-cage:latest
 
 ```
 _NB. Running this pipeline without docker would require modification of module nf scripts and its not recommended_
+_NB. The docker image will be converted to a singularity sif using the -profile singularity _
 
 # Quick Start
+
+The help manu can be access as following: 
+
+```
+nextflow run . --help
+```
+
 
 Sample FASTQ files are in the root folder (fastq_files) along with the barcodes per samples (barcode_files). Replace the files inside these 2 folders with your own experimental data in order to run the pipeline on your dataset. 
 
 ```
-nextflow run . -with-docker mazdax/nf-cage:latest 
+nextflow run . -profile singularity
 
 ```
 
@@ -100,7 +108,8 @@ docker build -t mazdax/nf-cage:aria2c .
 ```
 
 NB. nf-core and pyinquirer packages were manually removed from the docker builds. 
-NB. The main branch contains tested pipeline and for nf-core compatibility a "nfcore_opt" branch was created
+NB. The main branch contains tested pipeline and for nf-core compatibility a "nfcore_opt" branch was created.
+NB. The dev and dev_hpc branches were merged in to main for the final version. 
 
 
 
