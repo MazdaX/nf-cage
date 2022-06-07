@@ -17,6 +17,7 @@ nextflow.enable.dsl = 2
 
 ////////////////////////////////////////////////////
 /* --               PRINT HELP                 -- */
+params.help = ''
 
 if (params.help) {
     include {helpMessage} from './modules/local/process/help.nf'
@@ -64,7 +65,7 @@ include {BG2BW} from './modules/local/process/bedG_to_bigWig.nf'
 params.ref_fasta = 'https://sites.ualberta.ca/~stothard/1000_bull_genomes/ARS-UCD1.2_Btau5.0.1Y.fa.gz'
 params.raw_fastq = "$projectDir/fastq_files/*.gz"
 params.barcodes = Channel.value("$projectDir/barcode_files/barcode.list")
-params.help = ''
+
 
 workflow {
         //Queue channel allows for parallel execution of all files in a FIFO queue
