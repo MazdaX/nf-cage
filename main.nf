@@ -17,6 +17,13 @@ nextflow.enable.dsl = 2
 
 ////////////////////////////////////////////////////
 /* --               PRINT HELP                 -- */
+
+if (params.help) {
+    include {helpMessage} from './modules/local/process/help.nf'
+    helpMessage()
+    exit 0
+}
+
 ////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////
@@ -43,6 +50,7 @@ Input : Barcode list TSV (i.e. sample\tbarcode)
 Input : Reference Genome FASTA (URL or local)
 Output : Strand specific bp resolution bigWig 
 Running task: $params.all_in_one
+Workflow version: ${workflow.manifest.version}
 -----------------------------------------------
 """
 
