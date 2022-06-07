@@ -93,12 +93,16 @@ Pipeline has the following steps:
     Parameters:
     
     --help              Prints this message
+
     --ref_fasta         URL address to the reference FASTA File 
                         (e.g. "http://ftp.ensembl.org/pub/current_fasta/bos_taurus/dna/Bos_taurus.ARS-UCD1.2.dna.toplevel.fa.gz")
+
     --raw_fastq         Address of the folder containing gz-compressed CAGE (SE libraries before demux) FASTQ files
                         (e.g. --raw_fastq fastq_files/*.gz)
+
     --barcodes          Tab separated file with no header for the input barcodes to be used in demux 
                         (i.e. sampleName\tbarcode)
+                        
     --allowed_mismatch  The number of barcode mismatches allowed by the fastx_barcode_splitter.pl script
                          (default: 1)
 ```
