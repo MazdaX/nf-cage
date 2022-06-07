@@ -29,3 +29,4 @@ ref/*
 !fastq_files/CAGE_01.fastq.gz
 test.nf
 [:]/
+[:]/trace.txt
