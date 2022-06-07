@@ -3,6 +3,8 @@
 //Enabling the DSL2 syntax 
 nextflow.enable.dsl = 2
 
+params.help = ''
+
 def helpMessage() {
   log.info '''
 ======================================================================
