@@ -119,8 +119,16 @@ workflow {
         
         // Build bowtie2 index
         BT2BUILD(DOWNLOADREF.out)
+
+        mapping_index_ch=BT2BUILD.out.bowtie_index
+                                .flatten()
+                                .map({ it -> "$it".replaceAll(/.[1-4].bt2|.rev.[1-2].bt2/,"") })
+                                .unique()
+                                .map({ it -> new File(it) })
+                                //.view()
+
         // Mappping reads
-        BT2MAPPER(mapping_single_ch,BT2BUILD.out.bowtie_index)
+        BT2MAPPER(mapping_single_ch,mapping_index_ch)
         
         convert_single_channel=BT2MAPPER.out.OUT_mapped
                                 .flatten()
