@@ -80,10 +80,8 @@ process BT2MAPPER {
     
     script:
     """
-    #INDEX=`find -L ${bowtie_index.parent}/ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
-    FOLDER=` uniq ${bowtie_index.parent} `
-    INDEX=`\$(basename -s '.rev.1.bt2' \$(ls ${bowtie_index.parent}/*.rev.1.bt2))`
-
+    INDEX=`find -L ${bowtie_index}/ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    
     bowtie2 -p $task.cpus --met-file ${name}.metrics --very-sensitive \\
     --rg-id ${name} --rg LB:${name} --rg PL:ILLUMINA --rg SM:${name} \\
     -x \$INDEX \\
