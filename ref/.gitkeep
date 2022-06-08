@@ -1,6 +1,0 @@
-The reference genome for the original BovReg's pipeline:
-ARS-UCD1.2_Btau5.0.1Y 1000 bull project
-https://sites.ualberta.ca/~stothard/1000_bull_genomes/
-
-Please replace the download link in the mapKeeper process (mapper.nf) with your reference of choice. 
-This should be carried out prior to a fresh docker build as the docker pull will only have the bovine genome. 
