@@ -118,9 +118,10 @@ nextflow run . -profile singularity
 or 
 
 ```
-nextflow run -profile docker .
-N E X T F L O W  ~  version 21.04.3
-Launching `./main.nf` [cranky_cantor] - revision: 9e652e725b
+nextflow run . -c configs/conf/eddie.config
+
+N E X T F L O W  ~  version 22.04.3
+Launching `./main.nf` [silly_davinci] DSL2 - revision: 1908217c19
 
 ===============================================
         nf-cage BovReg's pipeline
@@ -129,25 +130,28 @@ Launching `./main.nf` [cranky_cantor] - revision: 9e652e725b
 ===============================================
 Input : Raw Illumina CAGE sequences
 Input : Barcode list TSV (i.e. sample   barcode)
-Input : Reference Genome FASTA (bowtie2 index)
+Input : Reference Genome FASTA (URL or local)
 Output : Strand specific bp resolution bigWig 
 Running task: AIO CAGEfightR import ready
+Workflow version: 0.0.1
 -----------------------------------------------
 
-executor >  local (103)
-[9b/f36040] process > qc_pre (FastQC...)                      [100%] 2 of 2 ✔
-[f2/a8d4ee] process > demux (Demultiplexing...)               [100%] 2 of 2 ✔
-[53/7323fa] process > merger (Gathering demux...)             [100%] 20 of 20 ✔
-[37/e53393] process > qc_post (FastQC...)                     [100%] 20 of 20 ✔
-[35/4590e7] process > multiqc (MultiQC...)                    [100%] 1 of 1 ✔
-[87/7af88a] process > trimmer (Trimming by TagDust2...)       [100%] 19 of 19 ✔
-[26/c6d571] process > mapKeeper (Sourcing the reference...)   [100%] 1 of 1 ✔
-[0d/b0ce36] process > mapper (Mapping using bowtie2...)       [100%] 19 of 19 ✔
-[c6/e7ddfb] process > bG2bW (BAM >>> bedGraph >>> BigWig ...) [100%] 19 of 19 ✔
-Completed at: 04-Sep-2021 13:42:08
-Duration    : 1d 2h 35m 41s
-CPU hours   : 212.7
-Succeeded   : 103
+executor >  sge (19)
+[d6/d0ed33] process > qc_pre (Running FastQC...)              [100%] 2 of 2, cached: 2 ✔
+[c9/2f0d69] process > DEMUX (Demultiplexing...)               [100%] 2 of 2, cached: 2 ✔
+[46/301625] process > MERGER (Gathering demux...)             [100%] 20 of 20, cached: 20 ✔
+[a4/d52782] process > qc_post (Running FastQC...)             [100%] 20 of 20, cached: 20 ✔
+[28/5435f1] process > MULTIQC (Running MultiQC...)            [100%] 1 of 1, cached: 1 ✔
+[d9/a7e4d3] process > TRIMMER (Trimming by TagDust2...)       [100%] 19 of 19, cached: 19 ✔
+[dc/9dce8d] process > DOWNLOADREF (Sourcing the reference...) [100%] 1 of 1, cached: 1 ✔
+[5a/414702] process > BT2BUILD (Bowtie2 build...)             [100%] 1 of 1, cached: 1 ✔
+[f6/839e10] process > BT2MAPPER (Mapping using bowtie2...)    [100%] 19 of 19, cached: 19 ✔
+[10/9c29e1] process > BG2BW (BAM >>> bedGraph >>> BigWig ...) [100%] 19 of 19 ✔
+Completed at: 08-Jun-2022 12:01:09
+Duration    : 3h 7m 58s
+CPU hours   : 216.0 (2.7% cached)
+Succeeded   : 19
+Cached      : 85
 
 ```
 
