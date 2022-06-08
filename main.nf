@@ -144,7 +144,7 @@ workflow {
                                 .flatten()
                                 .map{ it-> tuple(it.simpleName,it)}
         
-        BG2BW(convert_single_channel)
+        BG2BW(convert_single_channel,BT2BUILD.out.ref_cov)
         
 }
 
