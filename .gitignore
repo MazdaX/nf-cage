@@ -32,3 +32,4 @@ test.nf
 [:]/trace.txt
 [:]/report.html
 [:]/timeline.html
+.nf-core.yml
