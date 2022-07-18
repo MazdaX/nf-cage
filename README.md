@@ -4,6 +4,8 @@
   <img align="right" width="180" ![Docker Logo] src="/images/docker_logo.png">
 </p>
 
+[![DOI](https://zenodo.org/badge/397618218.svg)](https://zenodo.org/badge/latestdoi/397618218)
+
 # BovReg nf-cage pipeline 
 This is a CAGE analysis pipeline used in BovReg consortium (https://www.bovreg.eu/) studies. This pipeline was wrapped using NextFlow DSL2 syntax from demultiplexing to base pair resolution and strand specific read counting <br> (i.e. compatible for import to CAGEfightR https://bioconductor.org/packages/release/bioc/html/CAGEfightR.html)
 
